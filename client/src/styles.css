@@ -4,6 +4,10 @@ html {
   height: 100%;
 }
 
+/*#app {
+  position: relative;
+}*/
+
 body {
   height: 100%;
   position: relative;
@@ -239,7 +243,7 @@ select{
 
 #login {
   top: 0;
-  position: absolute;
+  position: relative;
   height: 100%;
   width: 100%;
   display: flex;
@@ -404,6 +408,5 @@ input[type=range]:focus::-ms-fill-lower {
 }
 
 input[type=range]:focus::-ms-fill-upper {
-  /*background: #11d4ee;*/
+  background: #11d4ee;
 }
-
