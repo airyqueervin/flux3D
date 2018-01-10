@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import './styles.css';
-import { helpers } from '../src/js/helpers.js';
+import { helpers } from './js/helpers.js';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
 import $ from 'jquery';
+import { box_data } from './js/box.js';
+let viewport;
 
 
 class App extends Component {
@@ -30,7 +32,6 @@ class App extends Component {
   }
   showLogin = () => {
     helpers.logout();
-    $('#login').css('display', 'flex')
     this.setState({loginVisible: true});
   }
 
@@ -43,20 +44,27 @@ class App extends Component {
     .then(function(isLoggedIn) {
       if (isLoggedIn) {
         console.log('logged in')
-        that.hideLogin()
-        // if logged in, make sure the login page is hidden
-        // that.setState({loginVisible: false})
+        that.hideLogin();
+        that.initViewport();
+        viewport.setGeometryEntity(box_data);
       } else {
         console.log('not logged in')
-        this.showLogin();
-        // this.setState({loginVisible: !this.state.loginVisible})
+        that.showLogin();
       }
     })
   }
 
+  initViewport = () => {
+    // attach the viewport to the #div view
+    viewport = new FluxViewport(document.querySelector("#test"))
+    // set up default lighting for the viewport
+    console.log('VIEW PORT', viewport)
+    viewport.setupDefaultLighting()
+    // set the viewport background to white
+    viewport.setClearColor(0xffffff)
+  }
+
   handleLoginClick = () => {
-    // console.log(helpers)
-    // this.init()
     helpers.redirectToFluxLogin()
       .then(() => {
         this.setState({loginVisible: false})
@@ -66,23 +74,15 @@ class App extends Component {
   render() {
     console.log('vis state', this.state.loginVisible)
     return (
-      <div>
+      <div className="container">
         <div classID='login'>
           {this.state.loginVisible ? <Login login={this.handleLoginClick} /> : <Logout showLogin={this.showLogin} />}
         </div>
-
-    
-        <div id='content'>
-        {/*<!-- left column -->*/}
-        <div className='column'>
-          <div id='output'>
-            <div className='label'>From Flux</div>
-            {/*<!-- geometry viewport -->*/}
-            <div id='geometry'>
-              <div id='view'></div>
-            </div>
-          </div>
-          </div>
+          <br/>
+          <br/>
+        <div id='test'>
+          <br/>
+          <br/>
         </div>
       </div>
     );
