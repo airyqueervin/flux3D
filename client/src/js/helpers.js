@@ -2,10 +2,10 @@
 import { config } from './config.js';
 
 // instantiate the Flux SDK with your appliation key
-let sdk = new FluxSdk(config.flux_client_id, { redirectUri: config.url, fluxUrl: config.flux_url })
-let helpers = new FluxHelpers(sdk)
-let user = null
-let dataTables = {}
+var sdk = new FluxSdk(config.flux_client_id, { redirectUri: config.url, fluxUrl: config.flux_url })
+var helpers = new FluxHelpers(sdk)
+var user = null
+var dataTables = {}
 
 /**
  * Get the Flux user.
@@ -29,7 +29,7 @@ function getProjects() {
  */
 function getDataTable(project) {
   if (!(project.id in dataTables)) {
-    let dt = getUser().getDataTable(project.id)
+    var dt = getUser().getDataTable(project.id)
     dataTables[project.id] = { table: dt, handlers: {}, websocketOpen: false }
   }
   return dataTables[project.id]
