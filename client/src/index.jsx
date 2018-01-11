@@ -90,7 +90,7 @@ class App extends Component {
       viewport.setGeometryEntity(null)
     } else {
       console.log('DatA THAT IS NOT A BOX', data.value)
-      viewport.setGeometryEntity(box_data)
+      viewport.setGeometryEntity(data.value)
        .then(res => {
          console.log('RESULT', res);
        })
