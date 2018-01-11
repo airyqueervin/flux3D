@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import './styles.css';
+// import './styles.css';
 import { helpers, getCell, getCells, getDataTable, getProjects, getUser, getValue } from './js/helpers.js';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
@@ -16,7 +16,8 @@ class App extends Component {
 
     this.state = {
       loginVisible: true,
-      userProject: []
+      userProject: [],
+      stateProjects: []
     };
 
     this.init()
@@ -28,17 +29,17 @@ class App extends Component {
   }
   showLogin = () => {
     helpers.logout();
-    $('#login').css('display', 'flex')
+    // $('#login').css('display', 'flex')
     this.setState({loginVisible: true});
   }
 
   init = () => {
     that = this;
-  // Check if we're coming back from Flux with the login credentials.
+    // Check if we're coming back from Flux with the login credentials.
     helpers.storeFluxUser()
-  // check that the user is logged in, otherwise show the login page
-    .then(function() { return helpers.isLoggedIn() })
-    .then(function(isLoggedIn) {
+    // check that the user is logged in, otherwise show the login page
+    .then(() => helpers.isLoggedIn())
+    .then(isLoggedIn => {
       if (isLoggedIn) {
         that.hideLogin();
         that.initViewport();
@@ -54,10 +55,12 @@ class App extends Component {
   initViewport = () => {
     // attach the viewport to the #div view
     viewport = new FluxViewport(document.querySelector("#view"));
+    console.log('VIEWPORT', viewport)
     // set up default lighting for the viewport
+    viewport.setSize(500, 500)
     viewport.setupDefaultLighting()
     // set the viewport background to white
-    viewport.setClearColor(0xffffff)
+    // viewport.setClearColor(0xffffff)
   }
 
   initCells = () => {
@@ -90,7 +93,7 @@ class App extends Component {
       viewport.setGeometryEntity(null)
     } else {
       console.log('DatA THAT IS NOT A BOX', data.value)
-      viewport.setGeometryEntity(box_data)
+      viewport.setGeometryEntity(data.value)
        .then(res => {
          console.log('RESULT', res);
        })
@@ -107,7 +110,7 @@ class App extends Component {
       projectCells = data.entities
       // for each project, create an option for the select box with
       // the cell.id as the value and the cell.label as the label
-      var options = projectCells.map(function(cell) {
+      let options = projectCells.map(function(cell) {
         return $('<option>').val(cell.id).text(cell.label)
       })
       // insert the default text as the first option
@@ -119,36 +122,45 @@ class App extends Component {
     })
   }
 
+  getSelectedProject = (currProject) => {
+    selectedProject = currProject
+    console.log('GETSELECTPROJECT CALLED', selectedProject)
+  }
+
   fetchProjects = () => {
     that = this;
     // get the user's projects from flux (returns a promise)
-    getProjects().then(function(data) {
-    projects = data.entities
-    // for each project, create an option for the select box with
-    // the project.id as the value and the project.name as the label
-    var options = projects.map(function(project) {
-      return $('<option>').val(project.id).text(project.name)
+    getProjects()
+      .then((data) => {
+        projects = data.entities
+        console.log('data in fetchProjects:', data)
+        that.setState({stateProjects: data.entities})
+        // for each project, create an option for the select box with
+        // the project.id as the value and the project.name as the label
+        // let options = projects.map(function(project) {
+        //   return $('<option>').val(project.id).text(project.name)
+        // })
+        // insert the default text as the first option
+      //   options.unshift('<option>Please select a project</option>')
+      //   // make sure the select box is empty and then insert the new options
+      //   $('select.project').empty().append(options)
+      //   // empty out the project cell (key) select boxes
+      //   $('select.cell').empty()
+      //   // attach a function to the select box change event
+      //   $('select.project').on('change', function(e) {
+      //   // find the project that was clicked on, and assign it to the global
+      //   // variable 'selectedProject'
+      //   selectedProject = projects.filter(function(p) { return p.id === e.target.value })[0]
+        
+      //   // now go fetch the project's cells (keys)
+      //   that.fetchCells()
+      // })
     })
-    // insert the default text as the first option
-    options.unshift('<option>Please select a project</option>')
-    // make sure the select box is empty and then insert the new options
-    $('select.project').empty().append(options)
-    // empty out the project cell (key) select boxes
-    $('select.cell').empty()
-    // attach a function to the select box change event
-    $('select.project').on('change', function(e) {
-      // find the project that was clicked on, and assign it to the global
-      // variable 'selectedProject'
-      selectedProject = projects.filter(function(p) { return p.id === e.target.value })[0]
-      
-      // now go fetch the project's cells (keys)
-      that.fetchCells()
-    })
-  })
-}
+
+  }
 
   render() {
-    return this.state.loginVisible ? <Login login={this.handleLoginClick} /> : <Logout showLogin={this.showLogin} />
+    return this.state.loginVisible ? <Login login={this.handleLoginClick} /> : <Logout getSelectedProject={this.getSelectedProject} projects={this.state.stateProjects} showLogin={this.showLogin} />
   }
 }
 
