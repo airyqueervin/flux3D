@@ -5,7 +5,7 @@ import axios from 'axios';
 import { helpers, getCell, getCells, getDataTable, getProjects, getUser, getValue } from './js/helpers.js';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
-import $ from 'jquery';
+// import $ from 'jquery';
 import { box_data } from './js/box.js';
 let viewport, selectedProject, projectCells, selectedOutputCell, that;
 
