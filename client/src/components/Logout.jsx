@@ -21,7 +21,6 @@ class Logout extends Component {
   }
 
   render() {
-    console.log('Selected value:', this.state.selectProjectValue)
     return (
       <div id='container' className="ui container">
         {/*<!-- header -->*/}
