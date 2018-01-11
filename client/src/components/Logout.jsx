@@ -4,22 +4,26 @@ class Logout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectValue: ''
+      selectProjectValue: '',
+      selectCellValue: ''
     }
   }
 
-  handleChange = (e) => {
-    console.log('Selected value in handleChange', e.target.value)
-    this.setState({selectValue: e.target.value}, () => {
-      this.props.getSelectedProject(JSON.parse(this.state.selectValue))
+  handleProjectChange = (e) => {
+    this.setState({selectProjectValue: e.target.value}, () => {
+      this.props.getSelectedProject(JSON.parse(this.state.selectProjectValue))
+    });
+  }
+  handleCellChange = (e) => {
+    this.setState({selectCellValue: e.target.value}, () => {
+      this.props.getSelectedCell(JSON.parse(this.state.selectCellValue))
     });
   }
 
   render() {
-    console.log('Selected value:', this.state.selectValue)
+    console.log('Selected value:', this.state.selectProjectValue)
     return (
       <div id='container' className="ui container">
-        {console.log('projects in logout', this.props.projects)}
         {/*<!-- header -->*/}
         <div id='header'>
           <div id='title'>
@@ -28,8 +32,8 @@ class Logout extends Component {
           </div>
           <div id='actions'>
             <div className='select'>
-              <select value={this.state.selectValue} onChange={this.handleChange} className='project'>
-                <option value={JSON.stringify('default')}>Please select a project</option>
+              <select value={this.state.selectProjectValue} onChange={this.handleProjectChange} className='project'>
+                <option value={JSON.stringify('projectDefault')}>Please select a project</option>
                 {this.props.projects ? this.props.projects.map((project, i) => <option value={JSON.stringify(project)} key={i}>{project.name}</option>) : null}
               </select>
             </div>
@@ -43,7 +47,10 @@ class Logout extends Component {
             <div id='output'>
               <div className='label'>From Flux</div>
               <div className='select'>
-                <select className='cell'></select>
+                <select value={this.state.selectCellValue} onChange={this.handleCellChange} className='cell'>
+                  <option value={JSON.stringify('cellDefault')}>Please select a cell</option>
+                  {this.props.cells ? this.props.cells.map((cell, i) => <option value={JSON.stringify(cell)} key={i}>{cell.label}</option>) : null}
+                </select>
               </div>
               {/*<!-- geometry viewport -->*/}
               <div id='geometry'>
