@@ -7,7 +7,9 @@ import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
 // import $ from 'jquery';
 import { box_data } from './js/box.js';
-let viewport, selectedProject, projectCells, selectedOutputCell, that;
+import * as THREE from 'three';
+
+let viewport, selectedProject, projectCells, selectedOutputCell, that, camera;
 
 
 class App extends Component {
@@ -18,7 +20,8 @@ class App extends Component {
       loginVisible: true,
       userProject: '',
       stateProjects: '',
-      stateCells: ''
+      stateCells: '',
+      renderer: ''
     };
 
     this.init()
@@ -51,7 +54,15 @@ class App extends Component {
   initViewport = () => {
     viewport = new FluxViewport(document.querySelector("#view"));
     viewport.setSize(500, 500)
-    viewport.setupDefaultLighting()
+    // camera = new FluxCameras(500, 500)
+    // camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    this.setState({renderer: viewport._renderer}, () => {
+      console.log('renders state after setstate', this.state.renderer)
+      console.log('GL CANVAS-------*******', viewport.getGlCanvas().getContext('webgl').render)
+    })
+    console.log('Whole Viewport in viewport', viewport)
+    // console.log('camer in viewport', viewport)
+    // viewport.setupDefaultLighting()
     // set the viewport background to white
     // viewport.setClearColor(0xffffff)
   }
@@ -95,7 +106,8 @@ class App extends Component {
     if (selectedProject && projectCells) {
       getValue(selectedProject, projectCells)
         .then((data) => {
-        that.renderData(data);
+          console.log('Data in cell', data)
+          that.renderData(data);
       })
     }
   }
@@ -110,7 +122,7 @@ class App extends Component {
   }
 
   render() {
-    return this.state.loginVisible ? <Login login={this.handleLoginClick} /> : <Logout getSelectedProject={this.getSelectedProject} getSelectedCell={this.getSelectedCell} projects={this.state.stateProjects} cells={this.state.stateCells} showLogin={this.showLogin} />
+    return this.state.loginVisible ? <Login login={this.handleLoginClick} /> : <Logout renderer={this.state.renderer} getSelectedProject={this.getSelectedProject} getSelectedCell={this.getSelectedCell} projects={this.state.stateProjects} cells={this.state.stateCells} showLogin={this.showLogin} />
   }
 }
 
