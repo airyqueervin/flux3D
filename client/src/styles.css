@@ -4,9 +4,27 @@ html {
   height: 100%;
 }
 
-/*#app {
+#app {
+  height: 100%;
+  width: 100%;
   position: relative;
-}*/
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+  min-width: 320px;
+  max-width: 100%;
+  background: #e8e8e8;
+  font-size: 14px;
+  line-height: 1.4285em;
+  color: rgba(0, 0, 0, 0.87);
+  font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+}
 
 body {
   height: 100%;

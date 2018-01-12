@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
-// import './styles.css';
+import './styles.css';
 import { helpers, getCell, getCells, getDataTable, getProjects, getUser, getValue } from './js/helpers.js';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
-// import $ from 'jquery';
 import { box_data } from './js/box.js';
-let viewport, selectedProject, projectCells, selectedOutputCell, that;
 
+let viewport, selectedProject, projectCells, selectedOutputCell, that;
 
 class App extends Component {
   constructor(props) {
@@ -50,10 +48,6 @@ class App extends Component {
 
   initViewport = () => {
     viewport = new FluxViewport(document.querySelector("#view"));
-    viewport.setSize(500, 500)
-    viewport.setupDefaultLighting()
-    // set the viewport background to white
-    // viewport.setClearColor(0xffffff)
   }
 
   handleLoginClick = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Login = ({ login }) => (
-  <div id="login">
+  <div style={{'display': 'flex'}} id="login">
     <div onClick={login} className="button">Login</div>
   </div>
 )

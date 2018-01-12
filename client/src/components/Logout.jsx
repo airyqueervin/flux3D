@@ -22,7 +22,7 @@ class Logout extends Component {
 
   render() {
     return (
-      <div id='container' className="ui container">
+      <div style={{'display': 'flex'}} id='container' className="ui container">
         {/*<!-- header -->*/}
         <div id='header'>
           <div id='title'>
@@ -45,15 +45,15 @@ class Logout extends Component {
           <div className='column'>
             <div id='output'>
               <div className='label'>From Flux</div>
-              <div className='select'>
-                <select value={this.state.selectCellValue} onChange={this.handleCellChange} className='cell'>
-                  <option value={JSON.stringify('cellDefault')}>Please select a cell</option>
-                  {this.props.cells ? this.props.cells.map((cell, i) => <option value={JSON.stringify(cell)} key={i}>{cell.label}</option>) : null}
-                </select>
-              </div>
               {/*<!-- geometry viewport -->*/}
               <div id='geometry'>
                 <div id='view'></div>
+                <div className='select'>
+                  <select value={this.state.selectCellValue} onChange={this.handleCellChange} className='cell'>
+                    <option value={JSON.stringify('cellDefault')}>Please select a cell</option>
+                    {this.props.cells ? this.props.cells.map((cell, i) => <option value={JSON.stringify(cell)} key={i}>{cell.label}</option>) : null}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
